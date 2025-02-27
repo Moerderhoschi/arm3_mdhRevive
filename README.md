@@ -14,6 +14,5 @@ Features:
 Dowload on Steam: https://steamcommunity.com/sharedfiles/filedetails/?id=3435005893
 
 CREDITS:
-
-Armed-Assault.de Crew - For many great ArmA moments in many years
-BIS - For ArmA3
+- Armed-Assault.de Crew - For many great ArmA moments in many years
+- BIS - For ArmA3
