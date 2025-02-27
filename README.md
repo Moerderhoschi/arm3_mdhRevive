@@ -1,4 +1,3 @@
-#mdhRevive
 MDH Revive is a modified version of the original Arma 3 Revive System, created by Moerderhoschi for Arma 3.
 
 Features:
