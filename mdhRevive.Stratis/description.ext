@@ -1,0 +1,10 @@
+onLoadName = "mdhRevive example";
+respawnOnStart = 0;
+
+class Params
+{
+	#include "mdh\pMdhRevive_1.ext"
+	#include "mdh\pMdhReviveBleedoutTime_0.ext"
+	#include "mdh\pMdhReviveAutoReviveTime_240.ext"
+	#include "mdh\pMdhReviveSpectator_1.ext"
+};
