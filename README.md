@@ -10,3 +10,10 @@ Features:
 - You are immortal while on the ground and unconscious.
 - Autorevive option is available.
 - Bleedout option is available.
+
+Dowload on Steam: https://steamcommunity.com/sharedfiles/filedetails/?id=3435005893
+
+CREDITS:
+
+Armed-Assault.de Crew - For many great ArmA moments in many years
+BIS - For ArmA3
