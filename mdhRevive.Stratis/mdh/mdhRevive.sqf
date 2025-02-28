@@ -1,5 +1,7 @@
 /////////////////////////////////////////////////////////////////////////////////////
 // mdhRevive, made by moerderhoschi
+// github: https://github.com/Moerderhoschi/arm3_mdhRevive
+// steam:  https://steamcommunity.com/sharedfiles/filedetails/?id=3435005893
 /////////////////////////////////////////////////////////////////////////////////////
 pMdhRevive                   = ["pMdhRevive",                   1] call BIS_fnc_getParamValue; // MDH REVIVE FOR ALL PLAYERS (LOOP)
 pMdhReviveBleedoutTime       = ["pMdhReviveBleedoutTime",     4^9] call BIS_fnc_getParamValue; // MDH REVIVE BLEEDOUT TIME FOR ALL PLAYERS (LOOP)
