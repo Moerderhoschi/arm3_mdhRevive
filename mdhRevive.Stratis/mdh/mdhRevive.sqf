@@ -97,8 +97,8 @@ if (missionNameSpace getVariable ["pMdhRevive",0] > 0 && {isMultiplayer}) then
 							{
 								[
 									_x,
-									//("Revive " + name _x),
-									("<t color=""#FF0000"">Revive "+(name _x)+"</t>"),
+									("Revive " + name _x),
+									//("<t color=""#FF0000"">Revive "+(name _x)+"</t>"),
 									"a3\ui_f\data\IGUI\Cfg\HoldActions\holdAction_revive_ca.paa",
 									"a3\ui_f\data\IGUI\Cfg\HoldActions\holdAction_revive_ca.paa",
 									"lifeState _target == ""INCAPACITATED"" 
