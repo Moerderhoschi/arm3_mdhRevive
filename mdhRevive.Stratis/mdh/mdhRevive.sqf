@@ -1,5 +1,5 @@
 /////////////////////////////////////////////////////////////////////////////////////
-// mdhRevive, made by moerderhoschi
+// MDH REVIVE FOR ALL PLAYERS(by Moerderhoschi) - v2025-03-28
 // github: https://github.com/Moerderhoschi/arm3_mdhRevive
 // steam:  https://steamcommunity.com/sharedfiles/filedetails/?id=3435005893
 /////////////////////////////////////////////////////////////////////////////////////
@@ -9,26 +9,82 @@ pMdhReviveAutoReviveTime     = ["pMdhReviveAutoReviveTime",   240] call BIS_fnc_
 pMdhReviveSpectator          = ["pMdhReviveSpectator",          1] call BIS_fnc_getParamValue; // MDH REVIVE SPECTATOR FOR INCAPACITATED PLAYERS (LOOP)
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
-// MDH REVIVE FOR ALL PLAYERS(by Moerderhoschi) - v2025-02-09
+// MDH REVIVE FOR ALL PLAYERS(by Moerderhoschi) - v2025-03-16
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 if (missionNameSpace getVariable ["pMdhRevive",0] > 0 && {isMultiplayer}) then
 {
 	0 spawn
 	{
+		_diary = 0;
+		if (hasInterface) then
+		{
+			_diary =
+			{
+				waitUntil {!(isNull player)};
+				_c = true;
+				_t = "MDH Revive";
+				if (player diarySubjectExists "MDH Mods") then
+				{
+					{
+						if (_x#1 == _t) exitWith {_c = false}
+					} forEach (player allDiaryRecords "MDH Mods");
+				}
+				else
+				{
+					player createDiarySubject ["MDH Mods","MDH Mods"];
+				};
+		
+				if(_c) then
+				{
+					player createDiaryRecord
+					[
+						"MDH Mods",
+						[
+							_t,
+							(
+							  '<br/>MDH Revive is a script, created by Moerderhoschi for Arma 3.<br/>'
+							+ '<br/>'
+							+ 'Features:<br/>'
+							+ '- You can revive unconscious players while laying on the ground.<br/>'
+							+ '- You can drag other players while they unconscious.<br/>'
+							+ '- You have a Spectatorcamera while unconscious.<br/>'
+							+ '- You are immortal while on the ground and unconscious.<br/>'
+							+ '- Autorevive option is available.<br/>'
+							+ '- Bleedout option is available.<br/>'
+							+ '<br/>'
+							+ 'If you have any question you can contact me at the steam workshop page.<br/>'
+							+ '<br/>'
+							+ 'Credits and Thanks:<br/>'
+							+ 'Armed-Assault.de Crew - For many great ArmA moments in many years<br/>'
+							+ 'BIS - For ArmA3<br/>'
+							)
+						]
+					]
+				};
+				true
+			};
+		};
+
+		if (hasInterface) then
+		{
+			uiSleep 0.3;
+			call _diary;
+		};
+
 		sleep (1 + random 1);
 		bis_reviveParam_mode = 1;
 		bis_revive_unconsciousStateMode = 0;
 		_p = missionNameSpace getVariable ["pMdhRevive",0];
 		mdhReviveAutoReviveTime = missionNameSpace getVariable["pMdhReviveAutoReviveTime", 240];
 		sleep 0.5;
-		if (!isDedicated) then {call BIS_fnc_reviveInit};
+		if (hasInterface) then {call BIS_fnc_reviveInit};
 		sleep 1;
 		bis_revive_duration = 5;
 		bis_revive_durationmedic = 2;
 		bis_revive_medicspeedmultiplier = 3;
 		bis_revive_bleedoutduration = missionNameSpace getVariable["pMdhReviveBleedoutTime", 4^9];
 		if (_p == 2) exitWith {bis_revive_bleedoutduration = 300};
-		if (!isDedicated) then 
+		if (hasInterface) then 
 		{
 			player setVariable ["mdhRevivePlayerSide",(side group player)];
 			player setVariable ["mdhRevived",false,true];
@@ -60,7 +116,8 @@ if (missionNameSpace getVariable ["pMdhRevive",0] > 0 && {isMultiplayer}) then
 					};
 				};
 			};
-			while{sleep 0.3; true}do
+			_diaryTimer = 10;
+			while{sleep 0.01; missionNameSpace getVariable ["pMdhRevive",0] > 0}do
 			{
 				waitUntil
 				{
@@ -97,12 +154,11 @@ if (missionNameSpace getVariable ["pMdhRevive",0] > 0 && {isMultiplayer}) then
 							{
 								[
 									_x,
-									("Revive " + name _x),
-									//("<t color=""#FF0000"">Revive "+(name _x)+"</t>"),
+									("<t color='#00FF00'>Revive "+(name _x)+"</t>"),
 									"a3\ui_f\data\IGUI\Cfg\HoldActions\holdAction_revive_ca.paa",
 									"a3\ui_f\data\IGUI\Cfg\HoldActions\holdAction_revive_ca.paa",
 									"lifeState _target == ""INCAPACITATED"" 
-									&& {player distance _target < 3}
+									&& {player distance _target < 3.2}
 									&& {!(_target getVariable [""mdhReviveDraged"",false])}
 									",
 									"true",
@@ -115,7 +171,7 @@ if (missionNameSpace getVariable ["pMdhRevive",0] > 0 && {isMultiplayer}) then
 									,99
 									,false
 									,false
-								] call BIS_fnc_holdActionAdd;
+								] call mdhHoldActionAdd;
 							};
 						};
 					} forEach allPlayers;
@@ -128,9 +184,21 @@ if (missionNameSpace getVariable ["pMdhRevive",0] > 0 && {isMultiplayer}) then
 	
 							if (!_f && {_x getVariable ["mdhRevivePlayerName",""] != ""}) then
 							{
-								_x addAction
 								[
-									("<t color=""#FF0000"">Drag "+(name _x)+"</t>"),
+									_x,
+									("<t color='#FF8200'>Drag "+(name _x)+" </t>"),
+									"a3\ui_f\data\IGUI\RscIngameUI\RscUnitInfoAirRTDFull\ico_insp_hand_ca.paa",
+									"a3\ui_f\data\IGUI\RscIngameUI\RscUnitInfoAirRTDFull\ico_insp_hand_ca.paa",
+									"lifeState _target == ""INCAPACITATED""
+									&& {vehicle player == player}
+									&& {player distance _target < 3}
+									&& {!(_target getVariable [""mdhReviveDraged"",false])}
+									&& {time > _target getVariable [""mdhReviveDragEnableTime"",time + 5]}
+									&& {_target in allPlayers}
+									",
+									"true",
+									{},
+									{},
 									{
 										params ["_target"];
 										if (currentWeapon player == handgunWeapon player) then
@@ -163,25 +231,30 @@ if (missionNameSpace getVariable ["pMdhRevive",0] > 0 && {isMultiplayer}) then
 												sleep 0.3;
 											};
 										};
-									},0,98,true,false,""
-									,"lifeState _target == ""INCAPACITATED""
-									&& {vehicle player == player}
-									&& {!(_target getVariable [""mdhReviveDraged"",false])}
-									&& {time > _target getVariable [""mdhReviveDragEnableTime"",time + 5]}
-									&& {_target in allPlayers}
-									"
-									,3,false
-								];
+									}
+									,{}
+									,[]
+									,1     // Action duration in seconds
+									,98    // Priority
+									,false // Remove on completion
+									,false // Show in unconscious state
+								] call mdhHoldActionAdd;
 							};
 						};
 					} forEach allPlayers;
-					
+
 					_f = (actionIDs player findIf { "Stop Drag" in (player actionParams _x select 0) }) != -1;
 					if (!_f) then
 					{
-						player addAction
 						[
-							("<t color=""#FF0000"">Stop Drag</t>"),
+							player,
+							("<t color='#FF8200'>Stop Drag</t>"),
+							"a3\ui_f\data\IGUI\RscIngameUI\RscUnitInfoAirRTDFull\ico_insp_hand_ca.paa",
+							"a3\ui_f\data\IGUI\RscIngameUI\RscUnitInfoAirRTDFull\ico_insp_hand_ca.paa",
+							"vehicle player == player && {player getVariable [""mdhReviveDragging"",false]} && {{_x isKindOf ""man""} count attachedObjects player > 0}",
+							"true",
+							{},
+							{},
 							{
 								{if(_x isKindOf "man")then{detach _x;_x setVariable ["mdhReviveDraged",false,true]}}forEach attachedObjects player;
 								player setVariable ["mdhReviveDragging",false,true];
@@ -190,13 +263,18 @@ if (missionNameSpace getVariable ["pMdhRevive",0] > 0 && {isMultiplayer}) then
 									if (animationState player in["acinpknlmstpsraswrfldnon","acinpknlmwlksraswrfldb","acinpknlmstpsnonwpstdnon","acinpknlmwlksnonwpstdb"]) then {player switchMove ""};
 									sleep 0.5;
 								};
-							},0,98,true,false,""
-							,"vehicle player == player && {player getVariable [""mdhReviveDragging"",false]} && {{_x isKindOf ""man""} count attachedObjects player > 0}"
-							,3,false
-						];
+							}
+							,{}
+							,[]
+							,1     // Action duration in seconds
+							,97    // Priority
+							,false // Remove on completion
+							,false // Show in unconscious state
+						] call mdhHoldActionAdd;														
 					};
 	
 					if (player getVariable ["mdhRevivePlayerName",""] == "") then {player setVariable ["mdhRevivePlayerName",name player,true]};
+					if (time > _diaryTimer) then {call _diary; _diaryTimer = time + 10};
 					call _mdhDragging;
 	
 					lifeState player == "INCAPACITATED"
@@ -257,6 +335,7 @@ if (missionNameSpace getVariable ["pMdhRevive",0] > 0 && {isMultiplayer}) then
 					sleep 0.3;
 					call _mdhDragging;
 					sleep 0.3;
+					if (time > _diaryTimer) then {call _diary; _diaryTimer = time + 10};
 	
 					lifeState player != "INCAPACITATED" OR time > _endTime OR player getVariable ["mdhRevived",false]
 				};
@@ -273,10 +352,45 @@ if (missionNameSpace getVariable ["pMdhRevive",0] > 0 && {isMultiplayer}) then
 					};
 				};
 				["Terminate"] call BIS_fnc_EGSpectator;
-				player allowDamage true;
-				sleep 0.2;
 				player setUnconscious false;
+				sleep 0.2;
+				player allowDamage true;
 			};
 		};
 	};
+};
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////
+// MDH HOLD ACTION ADD FUNCTION(by Moerderhoschi with massive help of GenCoder8) - v2025-03-27
+// fixed version of BIS_fnc_holdActionAdd
+///////////////////////////////////////////////////////////////////////////////////////////////////////////
+if (hasInterface) then
+{
+	GenCoder8_fixHoldActTimer =
+	{
+		params["_title","_iconIdle","_hint"];
+		private _frameProgress = "frameprog";
+		if(time > (missionNamespace getVariable [_frameProgress,-1])) then
+		{
+			missionNamespace setVariable [_frameProgress,time + 0.065];
+			bis_fnc_holdAction_animationIdleFrame = (bis_fnc_holdAction_animationIdleFrame + 1) % 12;
+		};
+		private _var = "bis_fnc_holdAction_animationIdleTime_" + (str _target) + "_" + (str _actionID);
+		if (time > (missionNamespace getVariable [_var,-1]) && {_eval}) then
+		{
+			missionNamespace setVariable [_var, time + 0.065];
+			if (!bis_fnc_holdAction_running) then
+			{
+				[_originalTarget,_actionID,_title,_iconIdle,bis_fnc_holdAction_texturesIdle,bis_fnc_holdAction_animationIdleFrame,_hint] call bis_fnc_holdAction_showIcon;
+			};
+		};
+	};
+
+	_origFNC = preprocessFileLineNumbers "a3\functions_f\HoldActions\fn_holdActionAdd.sqf";
+	_newFNC = ([_origFNC, "bis_fnc_holdAction_animationTimerCode", true] call BIS_fnc_splitString)#0;
+	_newFNC = _newFNC + "GenCoder8_fixHoldActTimer";
+	_newFNC = _newFNC + ([_origFNC, "bis_fnc_holdAction_animationTimerCode", true] call BIS_fnc_splitString)#1;
+	_newFNC = _newFNC + "GenCoder8_fixHoldActTimer";
+	_newFNC = _newFNC + ([_origFNC, "bis_fnc_holdAction_animationTimerCode", true] call BIS_fnc_splitString)#2;
+	mdhHoldActionAdd = compile _newFNC;
 };
