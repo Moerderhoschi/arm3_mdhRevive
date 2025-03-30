@@ -11,7 +11,8 @@ Features:
 - Autorevive option is available.
 - Bleedout option is available.
 
-Dowload on Steam: https://steamcommunity.com/sharedfiles/filedetails/?id=3435005893
+Download Mod version on Steam: https://steamcommunity.com/sharedfiles/filedetails/?id=3455187736
+Dowload example mission on Steam: https://steamcommunity.com/sharedfiles/filedetails/?id=3435005893
 
 CREDITS:
 - Armed-Assault.de Crew - For many great ArmA moments in many years
