@@ -34,6 +34,10 @@ if (missionNameSpace getVariable ["pMdhRevive",99] == 99 && {isMultiplayer}) the
 						{
 							missionNameSpace setVariable[_this#0,_this#1,true];
 							systemChat (_this#2);
+							if ((_this#0) == "bis_revive_Bleedoutduration") then
+							{
+								missionNameSpace setVariable["pMdhReviveBleedoutTime",_this#1,true];
+							};
 						}
 						else
 						{
@@ -101,11 +105,11 @@ if (missionNameSpace getVariable ["pMdhRevive",99] == 99 && {isMultiplayer}) the
 			call _diary;
 		};
 
+		mdhReviveAutoReviveTime = missionNameSpace getVariable["pMdhReviveAutoReviveTime", 240];
 		sleep (1 + random 1);
 		bis_reviveParam_mode = 1;
 		bis_revive_unconsciousStateMode = 0;
 		_p = missionNameSpace getVariable ["pMdhRevive",99];
-		mdhReviveAutoReviveTime = missionNameSpace getVariable["pMdhReviveAutoReviveTime", 240];
 		sleep 0.5;
 		if (hasInterface) then {call BIS_fnc_reviveInit};
 		sleep 1;
