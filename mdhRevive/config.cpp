@@ -4,7 +4,7 @@ class CfgPatches
 	{
 		author = "Moerderhoschi";
 		name = "MDH Revive";
-		url = "https://steamcommunity.com/sharedfiles/filedetails/?id=3435005893";
+		url = "https://steamcommunity.com/sharedfiles/filedetails/?id=3455187736";
 		units[] = {};
 		weapons[] = {};
 		requiredVersion = 1.0;
@@ -41,6 +41,6 @@ class CfgMods
 		hidePicture = "true";
 		hideName = "true";
 		actionName = "Website";
-		action = "https://steamcommunity.com/sharedfiles/filedetails/?id=3435005893";
+		action = "https://steamcommunity.com/sharedfiles/filedetails/?id=3455187736";
 	};
 };
